@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <script src="../../third_party/jquery.min.js" charset="utf-8"></script>
+  <script src="../../third_party/web3.min.js" charset="utf-8"></script>
+  <script src="../initEth.js" charset="utf-8"></script>
+</head>
+
+<body>
+  <div>
+  <button onclick="Deposit()">
+    Deposit
+  </button>
+
+  <button onclick="Send()">
+    Send
+  </button>
+
+  <button onclick="Withdraw()">
+    Withdraw
+  </button>
+
+  <button onclick="RefreshBalance()">
+    Refresh Balance
+  </button>
+</div>
+
+
+<div>
+  Sender's Balance: <p id="senB"></p> 
+</div>
+
+<div>
+  Receiver's Balance: <p id="recB"></p>
+</div>
+
+  <script>
+
+    function RefreshBalance() {
+      myContract.methods.getBalance(sender).call().then(function (res) {
+        // $("#senB").html.  
+        console.log(res);
+        document.getElementById("senB").innerHTML = web3.utils.fromWei(res);
+      })
+
+      myContract.methods.getBalance(receiver).call().then(function (res) {
+        // $("#senB").html.  
+        console.log(res);
+        document.getElementById("recB").innerHTML = web3.utils.fromWei(res);
+      })
+    }
+    function Deposit() {
+      console.log("InDeposit");
+      DepositTransaction = ({
+          from: sender,
+          to: SSaddress, // smart contract address
+          value: web3.utils.toWei("1", "ether")
+        });
+      myContract.methods.deposit().send(DepositTransaction);
+  }
+  
+  function Send() {
+      SendTransaction = ({
+          from: sender
+      });
+      myContract.methods.send(receiver, 100).send(SendTransaction);
+  }
+  
+  function Withdraw() {
+      WithdrawTransaction = ({
+          from: receiver
+      })
+      myContract.methods.withdraw(100).send(WithdrawTransaction);
+  }
+  </script>
+</body>
+</html>

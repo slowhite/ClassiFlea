@@ -1,0 +1,14 @@
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+.idea/
+.vscode/
+*.iml
+.DS_Store
+/data/
+*.mv.db
+*.trace.db
+/tmp/
+/uploads/
+.env
+.env.*
+application-local.properties

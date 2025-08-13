@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <base href="/adminlte/">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ClassiFlea | 注册</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
+</head>
+<body class="hold-transition register-page">
+<div class="register-box">
+  <div class="register-logo">
+    <a href="dashboard.html"><b>ClassiFlea</b></a>
+  </div>
+
+  <div class="card">
+    <div class="card-body register-card-body">
+      <p class="login-box-msg">注册新账号</p>
+
+      <form id="regForm" novalidate>
+        <div class="input-group mb-3">
+          <input id="email" type="email" class="form-control" placeholder="邮箱（作为登录名）" required>
+          <div class="input-group-append"><div class="input-group-text"><span class="fas fa-envelope"></span></div></div>
+        </div>
+
+        <div class="input-group mb-2">
+          <input id="password" type="password" class="form-control" placeholder="密码（≥8位，含字母数字）" required>
+          <div class="input-group-append"><div class="input-group-text"><span class="fas fa-lock"></span></div></div>
+        </div>
+        <div class="progress mb-2" style="height:4px;">
+          <div id="pwdBar" class="progress-bar" role="progressbar" style="width:0%"></div>
+        </div>
+
+        <div class="input-group mb-3">
+          <input id="password2" type="password" class="form-control" placeholder="确认密码" required>
+          <div class="input-group-append"><div class="input-group-text"><span class="fas fa-lock"></span></div></div>
+        </div>
+        <div class="input-group mb-3">
+  <input id="code" type="text" class="form-control" placeholder="验证码（6位）" required>
+  <div class="input-group-append">
+    <button class="btn btn-outline-primary" type="button" id="sendCodeBtn">发送验证码</button>
+  </div>
+</div>
+
+        <div class="row">
+          <div class="col-7">
+            <a href="login.html" class="text-center">我已有账号</a>
+          </div>
+          <div class="col-5">
+            <button id="submitBtn" type="submit" class="btn btn-primary btn-block">注册</button>
+          </div>
+        </div>
+      </form>
+
+      <div id="err" class="text-danger mt-3" style="min-height:1.2em;"></div>
+    </div>
+  </div>
+</div>
+
+<script src="plugins/jquery/jquery.min.js"></script>
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="dist/js/adminlte.min.js"></script>
+<script>
+  // 简单密码强度条
+  const pwd = document.getElementById('password');
+  const bar = document.getElementById('pwdBar');
+  pwd.addEventListener('input', ()=>{
+    const v = pwd.value || '';
+    let score = 0;
+    if (v.length >= 8) score += 30;
+    if (/[A-Z]/.test(v)) score += 20;
+    if (/[a-z]/.test(v)) score += 20;
+    if (/\d/.test(v))    score += 20;
+    if (/[^A-Za-z0-9]/.test(v)) score += 10;
+    bar.style.width = Math.min(score,100) + '%';
+    bar.className = 'progress-bar ' + (score>=70 ? 'bg-success' : score>=40 ? 'bg-warning' : 'bg-danger');
+  });
+
+  async function postJSON(url, data){
+    const r = await fetch(url, {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify(data)
+    });
+    return r;
+  }
+
+  // 先尝试 /account/register；没有就回退到 /register
+  async function register(data){
+    let r = await postJSON('/account/register', data);
+    if (r.status === 404) r = await postJSON('/register', data);
+    return r;
+  }
+
+  document.getElementById('regForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const email = document.getElementById('email').value.trim();
+  const p1 = document.getElementById('password').value;
+  const p2 = document.getElementById('password2').value;
+  const code = document.getElementById('code').value.trim();
+  const err = document.getElementById('err');
+  err.textContent = '';
+
+  if (!email) return err.textContent = '请输入邮箱';
+  if (p1.length < 8 || !/[A-Za-z]/.test(p1) || !/\d/.test(p1)) return err.textContent = '密码至少8位且包含字母和数字';
+  if (p1 !== p2) return err.textContent = '两次密码不一致';
+  if (!/^\d{6}$/.test(code)) return err.textContent = '请输入6位验证码';
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  try{
+    const r = await postJSON('/account/register', { email, password: p1, code /*, nickname 可选*/ });
+    if (!r.ok){
+      let msg='注册失败'; try{
+        const ct = r.headers.get('content-type')||'';
+        if (ct.includes('application/json')) msg = (await r.json()).error || msg;
+        else msg = await r.text() || msg;
+      }catch{}
+      throw new Error(msg);
+    }
+    location.href = 'login.html';
+  }catch(e){
+    err.textContent = e.message || '注册失败';
+  }finally{
+    btn.disabled = false;
+  }
+});
+
+</script>
+<script>
+async function postJSON(url, data){
+  return fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data) });
+}
+
+document.getElementById('sendCodeBtn').addEventListener('click', async ()=>{
+  const email = document.getElementById('email').value.trim();
+  const err = document.getElementById('err');
+  err.textContent = '';
+  if (!email || !email.includes('@')) { err.textContent='请先填写有效邮箱'; return; }
+
+  const btn = document.getElementById('sendCodeBtn');
+  btn.disabled = true;
+  try{
+    const r = await postJSON('/account/verification-code', { email });
+    if (!r.ok){
+      let msg = '发送失败'; try{
+        const ct = r.headers.get('content-type')||'';
+        if (ct.includes('application/json')) msg = (await r.json()).error || msg;
+        else msg = await r.text() || msg;
+      }catch{}
+      throw new Error(msg);
+    }
+    // 简易倒计时
+    let left = 60;
+    const timer = setInterval(()=>{
+      left--; btn.textContent = left>0 ? `重新发送(${left})` : '发送验证码';
+      if (left<=0) { clearInterval(timer); btn.disabled=false; }
+    }, 1000);
+    btn.textContent = `重新发送(${left})`;
+  }catch(e){
+    err.textContent = e.message || '发送失败';
+    btn.disabled = false;
+  }
+});
+</script>
+
+</body>
+</html>

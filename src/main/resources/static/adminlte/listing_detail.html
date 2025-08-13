@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <base href="/adminlte/">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ClassiFlea | Listing Detail</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <style>
+    .thumbs img{ cursor:pointer; max-height:80px; object-fit:cover; }
+    .main-image{ width:100%; max-height:420px; object-fit:contain; background:#f7f7f7; }
+  </style>
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <ul class="navbar-nav ">
+      <li class="nav-item"><a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a></li>
+      <li class="nav-item d-none d-sm-inline-block"><a href="market.html" class="nav-link">返回市场</a></li>
+    </ul>
+  </nav>
+
+<!-- Sidebar -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <!-- 品牌 -->
+  <a href="dashboard.html" class="brand-link">
+    <img src="dist/img/AdminLTELogo.png" class="brand-image img-circle elevation-3" style="opacity:.8" alt="">
+    <span class="brand-text font-weight-light">ClassiFlea</span>
+  </a>
+
+  <!-- 侧栏 -->
+  <div class="sidebar">
+    <!-- 用户面板：头像 + 昵称 + 邮箱（小号字） -->
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center">
+      <div class="image">
+  <img id="sidebarAvatar"
+       class="img-circle elevation-2"
+       src="dist/img/user2-160x160.jpg"
+       alt="avatar"
+       style="width:33px;height:33px;object-fit:cover;">
+</div>
+
+      <div class="info">
+        <a href="starter.html" class="d-block" id="sidebarNickname">User</a>
+        <small id="sidebarEmail" class="text-muted d-block" style="font-size:12px;"></small>
+      </div>
+    </div>
+
+    <!-- 菜单 -->
+    <nav class="mt-2">
+      <ul id="leftNav" class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <li class="nav-item">
+          <a href="dashboard.html" class="nav-link">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>Dashboard &#128640;</p>
+          </a>
+        </li>
+
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-store"></i>
+            <p>我是卖家<i class="right fas fa-angle-left"></i></p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="edge_mine.html" class="nav-link">
+                <i class="far fa-circle nav-icon"></i><p>卖出商品</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-shopping-bag"></i>
+            <p>我是买家<i class="right fas fa-angle-left"></i></p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item"><a href="market.html" class="nav-link"><i class="far fa-circle nav-icon"></i><p>市场</p></a></li>
+            <li class="nav-item"><a href="purchased.html" class="nav-link"><i class="far fa-circle nav-icon"></i><p>已购商品</p></a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <a href="starter.html" class="nav-link">
+            <i class="nav-icon fas fa-user-cog"></i>
+            <p>个人资料</p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="#" class="nav-link" id="sidebarLogout">
+            <i class="nav-icon fas fa-sign-out-alt"></i><p>退出登录</p>
+          </a>
+          <form id="sidebarLogoutForm" action="/logout" method="post" style="display:none"></form>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</aside>
+
+
+  <!-- Content -->
+  <div class="content-wrapper">
+    <section class="content-header">
+      <div class="container-fluid"><h1 id="title">商品详情</h1></div>
+    </section>
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <!-- 左：图片 -->
+          <div class="col-md-7">
+            <div class="card card-primary">
+              <div class="card-body">
+                <img id="mainImg" class="main-image" src="https://via.placeholder.com/800x450?text=No+Image">
+                <div class="row mt-3 thumbs" id="thumbs"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 右：信息 -->
+          <div class="col-md-5">
+            <div class="card card-outline card-primary">
+              <div class="card-body">
+                <h3 class="mb-3" id="price">¥ -</h3>
+                <p class="mb-1">状态：<span id="status" class="badge badge-secondary">-</span></p>
+                <hr/>
+                <dl class="row">
+                  <dt class="col-sm-4">分类</dt><dd class="col-sm-8" id="category">-</dd>
+                  <dt class="col-sm-4">成色</dt><dd class="col-sm-8" id="conditionLabel">-</dd>
+                  <dt class="col-sm-4">地点</dt><dd class="col-sm-8" id="location">-</dd>
+                  <dt class="col-sm-4">校区</dt><dd class="col-sm-8" id="campus">-</dd>
+                </dl>
+                <div class="mt-3">
+                  <button id="buyBtn" class="btn btn-success btn-block">
+                    <i class="fas fa-shopping-cart mr-1"></i> 确认购买
+                  </button>
+                </div>
+                <small class="text-muted d-block mt-2">提示：点击“确认购买”会创建订单并占位该商品。</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 描述 -->
+        <div class="row">
+          <div class="col-12">
+            <div class="card card-outline card-secondary">
+              <div class="card-header"><h3 class="card-title">描述</h3></div>
+              <div class="card-body" id="description">-</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <footer class="main-footer">
+    <div class="float-right d-none d-sm-block"><b>Version</b> 3.1.0</div>
+    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+  </footer>
+</div>
+
+<!-- Modal: 确认购买 -->
+<div class="modal fade" id="confirmBuyModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog"><div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">确认购买</h5>
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+    </div>
+    <div class="modal-body">确定要购买该商品吗？</div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" data-dismiss="modal">取消</button>
+      <button id="doBuyBtn" class="btn btn-primary">确定</button>
+    </div>
+  </div></div>
+</div>
+
+<script src="plugins/jquery/jquery.min.js"></script>
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="dist/js/adminlte.min.js"></script>
+<script>
+const qs = new URLSearchParams(location.search);
+const listingId = qs.get('id');
+
+async function fetchListing(){
+  const r = await fetch('/listings/' + listingId, {cache:'no-store'});
+  if(!r.ok){ $('#title').text('未找到该商品'); return null; }
+  const x = await r.json();
+  render(x);
+  return x;
+}
+
+function render(x){
+  document.title = 'ClassiFlea | ' + (x.title || '详情');
+  $('#title').text(x.title || '未命名');
+
+  $('#price').text(x.price != null ? '¥' + x.price : '¥ -');
+
+  const st = String(x.status||'').toLowerCase();
+  const badge = st==='active' ? 'badge-success'
+             : st==='reserved' ? 'badge-warning'
+             : 'badge-secondary';
+  $('#status').removeClass().addClass('badge ' + badge).text(x.status || '-');
+
+  $('#category').text(x.category || '-');
+  $('#conditionLabel').text(x.conditionLabel || '-');
+  $('#location').text(x.location || '-');
+  $('#campus').text(x.campus || '-');
+  $('#description').text(x.description || '-');
+
+  // 图片：封面 + 其他
+  const imgs = [];
+  if (x.coverImage) imgs.push(x.coverImage);
+  try{
+    const arr = JSON.parse(x.imagesJson || '[]');
+    if (Array.isArray(arr)) arr.forEach(u => { if (u) imgs.push(u); });
+  }catch{}
+  if (imgs.length === 0) {
+    imgs.push('https://via.placeholder.com/800x450?text=No+Image');
+  }
+
+  $('#mainImg').attr('src', imgs[0]);
+  const thumbs = imgs.map((u,i)=>`
+    <div class="col-3 mb-2">
+      <img class="img-fluid border ${i===0?'border-primary':''}" src="${u}" onclick="switchMain('${u}', this)">
+    </div>`).join('');
+  $('#thumbs').html(thumbs);
+
+  // 不是 active 就禁用购买
+  if (st !== 'active') {
+    $('#buyBtn').prop('disabled', true).text('不可购买');
+  }
+}
+
+function switchMain(url, el){
+  $('#mainImg').attr('src', url);
+  $('#thumbs img').removeClass('border-primary');
+  el.classList.add('border','border-primary');
+}
+
+// 购买：弹窗确认 -> POST /orders
+$('#buyBtn').on('click', () => $('#confirmBuyModal').modal('show'));
+$('#doBuyBtn').on('click', async () => {
+  $('#confirmBuyModal').modal('hide');
+  const r = await fetch('/orders', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ listingId })
+  });
+  if(!r.ok){
+    const msg = await r.text();
+    alert('购买失败：' + msg);
+    return;
+  }
+  alert('购买成功！已创建订单并占位该商品');
+  // 返回“我的购买”
+  location.href = 'purchased.html';
+});
+
+document.addEventListener('DOMContentLoaded', fetchListing);
+</script>
+<script>
+  // 若页面已有 authedFetch 就用它；否则退回原生 fetch
+  const _fetch = (typeof authedFetch === 'function') ? authedFetch : fetch;
+
+  // 填充头像 & 昵称（无昵称则用邮箱）
+  async function hydrateSidebar(){
+    try{
+      const rMe = await _fetch('/me', {cache:'no-store'});
+      if (!rMe.ok) return;
+      const me = await rMe.json(); // { email }
+
+      const rP = await _fetch('/profile', {cache:'no-store'});
+      const p  = rP.ok ? await rP.json() : {};
+
+      const nick = (p.nickname && p.nickname.trim()) ? p.nickname.trim() : me.email;
+      const avatar = (p.avatarUrl && p.avatarUrl.trim()) ? p.avatarUrl.trim() : 'dist/img/user2-160x160.jpg';
+
+      const nickEl = document.getElementById('sidebarNickname');
+      const emailEl = document.getElementById('sidebarEmail');
+      const imgEl   = document.getElementById('sidebarAvatar');
+
+      if (nickEl)  nickEl.textContent = nick;
+      if (emailEl) emailEl.textContent = me.email || '';
+      if (imgEl)   imgEl.src = avatar;
+    }catch(e){
+      // 未登录时可能被重定向；忽略即可
+      console.warn('hydrateSidebar skipped:', e && e.message);
+    }
+  }
+
+  // 根据当前路径，自动高亮并展开父级
+  function activateSidebar(){
+    const path = location.pathname.replace(/^\/+|\/+$/g, '');
+    document.querySelectorAll('.main-sidebar a.nav-link').forEach(a=>{
+      const href = (a.getAttribute('href') || '').replace(/^\/+|\/+$/g, '');
+      if (!href) return;
+      if (path.endsWith(href)){ // 简单匹配当前页
+        a.classList.add('active');
+        const parent = a.closest('.has-treeview');
+        if (parent){
+          parent.classList.add('menu-open');
+          const top = parent.querySelector(':scope > a.nav-link');
+          if (top) top.classList.add('active');
+        }
+      }
+    });
+  }
+
+  // 侧栏里的退出
+  document.getElementById('sidebarLogout')?.addEventListener('click', (e)=>{
+    e.preventDefault();
+    document.getElementById('sidebarLogoutForm')?.submit();
+  });
+
+  document.addEventListener('DOMContentLoaded', ()=>{
+    activateSidebar();
+    hydrateSidebar();
+  });
+</script>
+
+</body>
+</html>

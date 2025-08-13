@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="/adminlte/">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ClassiFlea | Profile</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <style>
+    .avatar { width: 96px; height:96px; border-radius:50%; object-fit:cover; background:#f3f3f3; }
+  </style>
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+
+  <!-- Navbar（精简，无消息/通知） -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <ul class="navbar-nav">
+      <li class="nav-item"><a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a></li>
+      <li class="nav-item d-none d-sm-inline-block"><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      <!-- 隐藏的退出表单 -->
+      <form id="logoutForm" action="/logout" method="post" style="display:none"></form>
+      <li class="nav-item">
+        <a class="nav-link" href="#" id="logoutLink"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </li>
+    </ul>
+  </nav>
+
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <!-- 品牌 -->
+  <a href="dashboard.html" class="brand-link">
+    <img src="dist/img/AdminLTELogo.png" class="brand-image img-circle elevation-3" style="opacity:.8" alt="">
+    <span class="brand-text font-weight-light">ClassiFlea</span>
+  </a>
+
+  <!-- 侧栏 -->
+  <div class="sidebar">
+    <!-- 用户面板：头像 + 昵称 + 邮箱（小号字） -->
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center">
+      <div class="image">
+  <img id="sidebarAvatar"
+       class="img-circle elevation-2"
+       src="dist/img/user2-160x160.jpg"
+       alt="avatar"
+       style="width:33px;height:33px;object-fit:cover;">
+</div>
+
+      <div class="info">
+        <a href="starter.html" class="d-block" id="sidebarNickname">User</a>
+        <small id="sidebarEmail" class="text-muted d-block" style="font-size:12px;"></small>
+      </div>
+    </div>
+
+    <!-- 菜单（分层 + 自动展开） -->
+    <nav class="mt-2">
+      <ul id="leftNav" class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <li class="nav-item">
+          <a href="dashboard.html" class="nav-link">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>Dashboard &#128640;</p>
+          </a>
+        </li>
+
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-store"></i>
+            <p>我是卖家<i class="right fas fa-angle-left"></i></p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="edge_mine.html" class="nav-link">
+                <i class="far fa-circle nav-icon"></i><p>卖出商品</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-shopping-bag"></i>
+            <p>我是买家<i class="right fas fa-angle-left"></i></p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item"><a href="market.html" class="nav-link"><i class="far fa-circle nav-icon"></i><p>市场</p></a></li>
+            <li class="nav-item"><a href="purchased.html" class="nav-link"><i class="far fa-circle nav-icon"></i><p>已购商品</p></a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <a href="starter.html" class="nav-link">
+            <i class="nav-icon fas fa-user-cog"></i>
+            <p>个人资料</p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="#" class="nav-link" id="sidebarLogout">
+            <i class="nav-icon fas fa-sign-out-alt"></i><p>退出登录</p>
+          </a>
+          <form id="sidebarLogoutForm" action="/logout" method="post" style="display:none"></form>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</aside>
+
+
+  <!-- Content -->
+  <div class="content-wrapper">
+    <section class="content-header">
+      <div class="container-fluid d-flex justify-content-between align-items-center">
+        <h1 class="mb-0">我的资料</h1>
+      </div>
+    </section>
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <!-- 左：头像 & 基本信息 -->
+          <div class="col-md-5">
+            <div class="card card-primary card-outline">
+              <div class="card-body">
+                <div class="d-flex align-items-center">
+                  <img id="avatarPreview" class="avatar mr-3" src="dist/img/user2-160x160.jpg" alt="">
+                  <div>
+                    <div class="mb-2">
+                      <input type="file" id="avatarFile" accept="image/*">
+                    </div>
+                    <div class="input-group">
+                      <input id="avatarUrl" class="form-control" placeholder="或粘贴头像URL">
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" id="useAvatarUrl">使用</button>
+                      </div>
+                    </div>
+                    <small class="text-muted">选择本地图片</small>
+                  </div>
+                </div>
+                <hr>
+                <div class="form-group">
+                  <label>邮箱（登录账号）</label>
+                  <input id="email" class="form-control" readonly>
+                </div>
+                <div class="form-group">
+                  <label>昵称</label>
+                  <input id="nickname" class="form-control" placeholder="填写您的显示名称">
+                </div>
+                <div class="form-group">
+                  <label>联系方式（可选，如微信/手机）</label>
+                  <input id="phone" class="form-control" placeholder="如：WeChat: xxx / Phone: 090-xxxx-xxxx">
+                </div>
+                <div class="form-group mb-0">
+                  <label>个人简介</label>
+                  <textarea id="bio" class="form-control" rows="3" placeholder="一句话介绍自己"></textarea>
+                </div>
+              </div>
+              <div class="card-footer text-right">
+                <button class="btn btn-primary" id="saveProfile"><i class="fas fa-save mr-1"></i>保存资料</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 右：修改密码 & 快速入口 -->
+          <div class="col-md-7">
+            <div class="card card-outline card-secondary">
+              <div class="card-header"><h3 class="card-title mb-0">修改密码</h3></div>
+              <div class="card-body">
+                <div class="form-row">
+                  <div class="form-group col-md-4"><input id="oldPwd" type="password" class="form-control" placeholder="当前密码"></div>
+                  <div class="form-group col-md-4"><input id="newPwd" type="password" class="form-control" placeholder="新密码（≥8位）"></div>
+                  <div class="form-group col-md-4"><input id="newPwd2" type="password" class="form-control" placeholder="确认新密码"></div>
+                </div>
+                <button class="btn btn-secondary" id="changePwdBtn"><i class="fas fa-key mr-1"></i>更新密码</button>
+              </div>
+            </div>
+
+            <div class="card card-outline card-info">
+              <div class="card-header"><h3 class="card-title mb-0">快速入口</h3></div>
+              <div class="card-body">
+                <a href="edge_mine.html" class="btn btn-outline-primary mr-2"><i class="fas fa-store mr-1"></i>我的上架</a>
+                <a href="purchased.html" class="btn btn-outline-primary mr-2"><i class="fas fa-shopping-bag mr-1"></i>我的购买</a>
+                <a href="market.html" class="btn btn-outline-primary"><i class="fas fa-th mr-1"></i>逛市场</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <aside class="control-sidebar control-sidebar-dark"></aside>
+</div>
+
+<!-- Scripts -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="dist/js/adminlte.min.js"></script>
+
+<script>
+// ---- 统一fetch：未登录则跳回登录页
+async function authedFetch(url, options={}) {
+  const r = await fetch(url, options);
+  const ct = r.headers.get('content-type') || '';
+  if (r.redirected || (ct.includes('text/html') && (r.url.includes('/login') || r.url.includes('/adminlte/login.html')))) {
+    location.href = '/adminlte/login.html';
+    throw new Error('AUTH_REDIRECT');
+  }
+  return r;
+}
+
+// 退出
+document.getElementById('logoutLink').addEventListener('click', function(e){
+  e.preventDefault(); document.getElementById('logoutForm').submit();
+});
+
+// 加载当前用户 email & 资料
+async function loadMeAndProfile(){
+  try{
+    const meRes = await authedFetch('/me', {cache:'no-store'});
+    const me = await meRes.json(); // { email }
+    document.getElementById('email').value = me.email;
+
+    const pRes = await authedFetch('/profile', {cache:'no-store'});
+    const p = pRes.ok ? await pRes.json() : {};
+    document.getElementById('nickname').value = p.nickname || '';
+    document.getElementById('phone').value    = p.phone    || '';
+    document.getElementById('bio').value      = p.bio      || '';
+    const avatar = p.avatarUrl || 'dist/img/user2-160x160.jpg';
+    document.getElementById('avatarPreview').src = avatar;
+    document.getElementById('sidebarAvatar').src = avatar;
+    document.getElementById('avatarUrl').value = p.avatarUrl || '';
+  }catch(e){
+    if (e.message !== 'AUTH_REDIRECT') console.error(e);
+  }
+}
+
+// 保存资料
+document.getElementById('saveProfile').addEventListener('click', async ()=>{
+  const body = {
+    nickname: document.getElementById('nickname').value.trim(),
+    phone:    document.getElementById('phone').value.trim(),
+    bio:      document.getElementById('bio').value.trim(),
+    avatarUrl:document.getElementById('avatarUrl').value.trim()
+  };
+  try{
+    const r = await authedFetch('/profile', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(body)
+    });
+    if (!r.ok) throw new Error('保存失败：'+r.status);
+    alert('已保存');
+    await loadMeAndProfile();
+  }catch(e){ alert(e.message || '保存失败'); }
+});
+
+// 头像：本地选择 → /upload → 回填 & 预览
+// ---- 工具：把 File 读成 Image
+function loadImageFromFile(file){
+  return new Promise((resolve, reject)=>{
+    const img = new Image();
+    img.onload = ()=> resolve(img);
+    img.onerror = reject;
+    // 防止跨域问题：本地文件不会触发 CORS，这行只是习惯性写法
+    img.crossOrigin = 'anonymous';
+    img.src = URL.createObjectURL(file);
+  });
+}
+
+// ---- 工具：把任意图片裁中心正方形，并缩放到 targetSize（默认512）
+async function cropToSquareFile(file, targetSize=512, mime='image/jpeg', quality=0.92){
+  const img = await loadImageFromFile(file);
+  const side = Math.min(img.naturalWidth, img.naturalHeight); // 正方形边长
+  const sx = (img.naturalWidth  - side) / 2;  // 从中心裁
+  const sy = (img.naturalHeight - side) / 2;
+
+  const canvas = document.createElement('canvas');
+  canvas.width = targetSize;
+  canvas.height = targetSize;
+  const ctx = canvas.getContext('2d');
+  // 平滑缩放
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
+  ctx.drawImage(img, sx, sy, side, side, 0, 0, targetSize, targetSize);
+
+  return new Promise((resolve)=>{
+    canvas.toBlob((blob)=>{
+      // 生成一个新的 File，文件名沿用原后缀或统一为 .jpg
+      const ext = mime === 'image/png' ? '.png' : '.jpg';
+      const newFile = new File([blob], (file.name.replace(/\.\w+$/, '') || 'avatar') + ext, { type: mime });
+      resolve(newFile);
+      // 释放对象 URL
+      URL.revokeObjectURL(img.src);
+    }, mime, quality);
+  });
+}
+
+// 头像：本地选择 → 前端裁切为 512×512 正方形 → /upload → 回填 & 预览
+document.getElementById('avatarFile').addEventListener('change', async function(){
+  const orig = this.files && this.files[0]; 
+  if(!orig) return;
+  try{
+    // 1) 前端裁切成正方形
+    const cropped = await cropToSquareFile(orig, 512, 'image/jpeg', 0.92);
+
+    // 2) 上传裁切后的文件
+    const fd = new FormData(); 
+    fd.append('file', cropped);
+    const r = await authedFetch('/upload', { method:'POST', body: fd });
+    if (!r.ok) throw new Error('上传失败：HTTP ' + r.status);
+    const data = await r.json(); // { url }
+
+    // 3) 回填 & 预览 & 侧栏同步
+    document.getElementById('avatarUrl').value = data.url;
+    document.getElementById('avatarPreview').src = data.url;
+    document.getElementById('sidebarAvatar').src = data.url;
+  }catch(e){
+    alert(e.message || '上传失败');
+  }finally{
+    this.value = '';
+  }
+});
+
+// 头像：使用URL
+document.getElementById('useAvatarUrl').addEventListener('click', function(e){
+  e.preventDefault();
+  const url = document.getElementById('avatarUrl').value.trim();
+  if (url) {
+    document.getElementById('avatarPreview').src = url;
+    document.getElementById('sidebarAvatar').src = url;
+  }
+});
+
+// 修改密码
+document.getElementById('changePwdBtn').addEventListener('click', async ()=>{
+  const oldPwd = document.getElementById('oldPwd').value;
+  const newPwd = document.getElementById('newPwd').value;
+  const newPwd2= document.getElementById('newPwd2').value;
+  if (!oldPwd || !newPwd) return alert('请填写完整');
+  if (newPwd.length < 8) return alert('新密码至少 8 位');
+  if (newPwd !== newPwd2) return alert('两次输入不一致');
+  try{
+    const r = await authedFetch('/account/password', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ oldPassword: oldPwd, newPassword: newPwd })
+    });
+    if (!r.ok) {
+      const msg = await r.text();
+      throw new Error(msg || '修改失败');
+    }
+    alert('密码已更新，请使用新密码重新登录');
+    document.getElementById('logoutForm').submit();
+  }catch(e){ alert(e.message || '修改失败'); }
+});
+
+document.addEventListener('DOMContentLoaded', loadMeAndProfile);
+</script>
+<script>
+  // 若页面已有 authedFetch 就用它；否则退回原生 fetch
+  const _fetch = (typeof authedFetch === 'function') ? authedFetch : fetch;
+
+  // 填充头像 & 昵称（无昵称则用邮箱）
+  async function hydrateSidebar(){
+    try{
+      const rMe = await _fetch('/me', {cache:'no-store'});
+      if (!rMe.ok) return;
+      const me = await rMe.json(); // { email }
+
+      const rP = await _fetch('/profile', {cache:'no-store'});
+      const p  = rP.ok ? await rP.json() : {};
+
+      const nick = (p.nickname && p.nickname.trim()) ? p.nickname.trim() : me.email;
+      const avatar = (p.avatarUrl && p.avatarUrl.trim()) ? p.avatarUrl.trim() : 'dist/img/user2-160x160.jpg';
+
+      const nickEl = document.getElementById('sidebarNickname');
+      const emailEl = document.getElementById('sidebarEmail');
+      const imgEl   = document.getElementById('sidebarAvatar');
+
+      if (nickEl)  nickEl.textContent = nick;
+      if (emailEl) emailEl.textContent = me.email || '';
+      if (imgEl)   imgEl.src = avatar;
+    }catch(e){
+      // 未登录时可能被重定向；忽略即可
+      console.warn('hydrateSidebar skipped:', e && e.message);
+    }
+  }
+
+  // 根据当前路径，自动高亮并展开父级
+  function activateSidebar(){
+    const path = location.pathname.replace(/^\/+|\/+$/g, '');
+    document.querySelectorAll('.main-sidebar a.nav-link').forEach(a=>{
+      const href = (a.getAttribute('href') || '').replace(/^\/+|\/+$/g, '');
+      if (!href) return;
+      if (path.endsWith(href)){ // 简单匹配当前页
+        a.classList.add('active');
+        const parent = a.closest('.has-treeview');
+        if (parent){
+          parent.classList.add('menu-open');
+          const top = parent.querySelector(':scope > a.nav-link');
+          if (top) top.classList.add('active');
+        }
+      }
+    });
+  }
+
+  // 侧栏里的退出
+  document.getElementById('sidebarLogout')?.addEventListener('click', (e)=>{
+    e.preventDefault();
+    document.getElementById('sidebarLogoutForm')?.submit();
+  });
+
+  document.addEventListener('DOMContentLoaded', ()=>{
+    activateSidebar();
+    hydrateSidebar();
+  });
+</script>
+
+</body>
+</html>

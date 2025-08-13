@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <base href="/adminlte/">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ClassiFlea | Seller</title>
+
+  <!-- Fonts & AdminLTE -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <style>
+    .cover-img{width:100%;height:160px;object-fit:cover;background:#f7f7f7}
+  </style>
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <ul class="navbar-nav ">
+      <li class="nav-item"><a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a></li>
+      <li class="nav-item d-none d-sm-inline-block"><a href="dashboard.html" class="nav-link">Dashboard &#128640;</a></li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item"><a class="nav-link" data-widget="fullscreen" href="#"><i class="fas fa-expand-arrows-alt"></i></a></li>
+    </ul>
+  </nav>
+
+  <!-- Sidebar -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <!-- 品牌 -->
+  <a href="dashboard.html" class="brand-link">
+    <img src="dist/img/AdminLTELogo.png" class="brand-image img-circle elevation-3" style="opacity:.8" alt="">
+    <span class="brand-text font-weight-light">ClassiFlea</span>
+  </a>
+
+  <!-- 侧栏 -->
+  <div class="sidebar">
+    <!-- 用户面板：头像 + 昵称 + 邮箱（小号字） -->
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center">
+      <div class="image">
+  <img id="sidebarAvatar"
+       class="img-circle elevation-2"
+       src="dist/img/user2-160x160.jpg"
+       alt="avatar"
+       style="width:33px;height:33px;object-fit:cover;">
+</div>
+
+      <div class="info">
+        <a href="starter.html" class="d-block" id="sidebarNickname">User</a>
+        <small id="sidebarEmail" class="text-muted d-block" style="font-size:12px;"></small>
+      </div>
+    </div>
+
+    <!-- 菜单（分层 + 自动展开） -->
+    <nav class="mt-2">
+      <ul id="leftNav" class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <li class="nav-item">
+          <a href="dashboard.html" class="nav-link">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>Dashboard &#128640;</p>
+          </a>
+        </li>
+
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-store"></i>
+            <p>我是卖家<i class="right fas fa-angle-left"></i></p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="edge_mine.html" class="nav-link">
+                <i class="far fa-circle nav-icon"></i><p>卖出商品</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-shopping-bag"></i>
+            <p>我是买家<i class="right fas fa-angle-left"></i></p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item"><a href="market.html" class="nav-link"><i class="far fa-circle nav-icon"></i><p>市场</p></a></li>
+            <li class="nav-item"><a href="purchased.html" class="nav-link"><i class="far fa-circle nav-icon"></i><p>已购商品</p></a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <a href="starter.html" class="nav-link">
+            <i class="nav-icon fas fa-user-cog"></i>
+            <p>个人资料</p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="#" class="nav-link" id="sidebarLogout">
+            <i class="nav-icon fas fa-sign-out-alt"></i><p>退出登录</p>
+          </a>
+          <form id="sidebarLogoutForm" action="/logout" method="post" style="display:none"></form>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</aside>
+
+
+  <!-- Content -->
+  <div class="content-wrapper">
+    <section class="content-header">
+      <div class="container-fluid d-flex justify-content-between align-items-center">
+        <h1 class="mb-0">我的上架</h1>
+        <button class="btn btn-primary" id="openCreateBtn"><i class="fas fa-plus mr-1"></i> 发布商品</button>
+      </div>
+    </section>
+
+    <section class="content">
+      <div class="container-fluid">
+        <h5 class="mb-2">已上架</h5>
+        <div class="row" id="active_list"></div>
+
+        <h5 class="mb-2 mt-4">已被购买</h5>
+        <div class="row" id="reserved_list"></div>
+
+        <h5 class="mb-2 mt-4">已完成交易</h5>
+        <div class="row" id="sold_list"></div>
+      </div>
+    </section>
+
+    <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
+      <i class="fas fa-chevron-up"></i>
+    </a>
+  </div>
+
+  <footer class="main-footer">
+    <div class="float-right d-none d-sm-block"><b>Version</b> 3.1.0</div>
+    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+  </footer>
+
+  <aside class="control-sidebar control-sidebar-dark"></aside>
+</div>
+
+<!-- Create/Edit Modal -->
+<div class="modal fade" id="createModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg"><div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">发布商品</h5>
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="createForm">
+        <div class="form-row">
+          <div class="form-group col-md-8">
+            <label>标题 <span class="text-danger">*</span></label>
+            <input class="form-control" id="f_title" required>
+          </div>
+          <div class="form-group col-md-4">
+            <label>价格(¥) <span class="text-danger">*</span></label>
+            <input class="form-control" id="f_price" type="number" min="0" step="0.01" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-3"><label>校区</label><input class="form-control" id="f_campus"></div>
+          <div class="form-group col-md-3"><label>分类</label><input class="form-control" id="f_category"></div>
+          <div class="form-group col-md-3"><label>成色</label><input class="form-control" id="f_condition"></div>
+          <div class="form-group col-md-3"><label>地点</label><input class="form-control" id="f_location"></div>
+        </div>
+
+        <div class="form-group">
+          <label>描述</label>
+          <textarea class="form-control" id="f_desc" rows="3" placeholder="可填写尺寸、来源、使用情况等"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>封面图片</label>
+          <div class="d-flex">
+            <input class="form-control mr-2" id="f_cover" placeholder="/adminlte/uploads/xxx.jpg 或外链URL">
+            <input type="file" id="f_cover_file" accept="image/*">
+          </div>
+          <small class="text-muted">可直接粘贴URL，或选择本地图片自动上传</small>
+          <div class="mt-2">
+            <img id="f_cover_preview" style="max-width:240px;max-height:160px;object-fit:cover;background:#f7f7f7;">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>更多图片（逗号分隔 URL）</label>
+          <input class="form-control" id="f_images" placeholder="/adminlte/dist/img/photo2.png, /adminlte/dist/img/photo3.jpg">
+          <small class="text-muted">会保存为 JSON 数组，详情页轮播会显示。</small>
+        </div>
+
+        <div class="form-group mb-0">
+          <label>卖家邮箱</label>
+          <input class="form-control" id="f_email" disabled>
+          <small class="text-muted">从本地账号信息读取，登录接好后这里会自动带入。</small>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" data-dismiss="modal">取消</button>
+      <button class="btn btn-primary" id="createSubmitBtn">发布到市场</button>
+    </div>
+  </div></div>
+</div>
+
+<!-- jQuery + Bootstrap + AdminLTE -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="dist/js/adminlte.min.js"></script>
+
+<script>
+// ===== 仅用于页面显示（不再参与请求头）=====
+function getSellerEmail(){
+  return localStorage.getItem('userEmail') || '';
+}
+
+//  填充侧栏用户名为当前登录邮箱
+(async () => {
+  try {
+    const r = await fetch('/me', {cache:'no-store'});
+    if (r.ok) {
+      const { email } = await r.json();
+      const el = document.getElementById('sidebarUser');
+      if (el) el.textContent = email;
+    }
+  } catch {}
+})();
+
+// ===== 统一的 fetch 封装：处理未登录被重定向到登录页的情况 =====
+async function authedFetch(url, options = {}) {
+  const r = await fetch(url, options);
+  const ct = r.headers.get('content-type') || '';
+  if (r.redirected || (ct.includes('text/html') && url.startsWith('/my/'))) {
+    location.href = r.url.includes('/adminlte/login.html') ? r.url : '/adminlte/login.html';
+    return Promise.reject(new Error('AUTH_REDIRECT'));
+  }
+  return r;
+}
+
+// ===== 载入我的上架 =====
+async function loadMine(){
+  try{
+    const r = await authedFetch('/my/listings', { cache: 'no-store' });
+    if(!r.ok) throw new Error('HTTP ' + r.status);
+    const list = await r.json() || [];
+
+    const active   = list.filter(x => String(x.status).toLowerCase()==='active');
+    const reserved = list.filter(x => String(x.status).toLowerCase()==='reserved');
+    const sold     = list.filter(x => String(x.status).toLowerCase()==='sold');
+
+    renderSection('active_list',   active,   'active');
+    renderSection('reserved_list', reserved, 'reserved');
+    renderSection('sold_list',     sold,     'sold');
+
+  }catch(e){
+    if (e.message === 'AUTH_REDIRECT') return;
+    console.error(e);
+    ['active_list','reserved_list','sold_list'].forEach(id=>{
+      const box = document.getElementById(id);
+      if (box) box.innerHTML = '<div class="col-12 text-danger">加载失败</div>';
+    });
+  }
+}
+
+// ===== 渲染某个分组 =====
+function renderSection(containerId, arr, type){
+  const box = document.getElementById(containerId);
+  if(!box) return;
+  if(!arr || arr.length===0){
+    box.innerHTML = '<div class="col-12 text-muted">暂无</div>';
+    return;
+  }
+
+  box.innerHTML = arr.map(x => {
+    const badge = type==='active' ? 'badge-success'
+                : type==='reserved' ? 'badge-warning'
+                : 'badge-secondary';
+    return `
+      <div class="col-md-5" data-id="${x.id}">
+        <div class="card shadow-lg ${type==='sold' ? 'card-secondary' : 'card-primary'}">
+          <div class="card-body">
+            <img class="cover-img mb-3"
+                 src="${x.coverImage || 'dist/img/default-150x150.png'}"
+                 alt=""
+                 onerror="this.src='dist/img/default-150x150.png'">
+            <h5 class="mb-1">${x.title || '未命名'}</h5>
+            <p class="mb-2" style="color:indianred;font-size:18px;">
+              ¥${x.price ?? '-'} <span class="badge ${badge} ml-2">${type}</span>
+            </p>
+            <ul class="mb-2">
+              <li>校区：${x.campus || '-'}</li>
+              <li>分类：${x.category || '-'}</li>
+              <li>成色：${x.conditionLabel || '-'}</li>
+              <li>地点：${x.location || '-'}</li>
+            </ul>
+            <div>
+              <a class="btn btn-outline-primary btn-sm" href="listing_detail.html?id=${x.id}">查看详情</a>
+              ${renderActionsByStatus(x)}
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ===== 按状态渲染操作按钮 =====
+function renderActionsByStatus(x){
+  const id = x.id;
+  const st = String(x.status||'').toLowerCase();
+  if (st === 'active'){
+    return `
+      <button class="btn btn-secondary btn-sm ml-2" onclick="changeStatus(${id}, 'closed')">下架</button>`;
+  }
+  if (st === 'reserved'){
+    return `
+      <button class="btn btn-secondary btn-sm ml-2" onclick="changeStatus(${id}, 'closed')">下架</button>`;
+  }
+  if (st === 'sold'){
+    return ``;
+  }
+  return `<button class="btn btn-primary btn-sm ml-2" onclick="changeStatus(${id}, 'active')">重新上架</button>`;
+}
+
+// ===== 修改状态 =====
+async function changeStatus(id, value){
+  if(!confirm('确定执行此操作吗？')) return;
+  try{
+    const r = await authedFetch(`/my/listings/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: value })
+    });
+    if(!r.ok){
+      const msg = await r.text();
+      alert('操作失败：' + (msg || r.status));
+      return;
+    }
+    await loadMine();
+  }catch(e){
+    if (e.message !== 'AUTH_REDIRECT') alert('操作失败');
+  }
+}
+
+// ===== 打开发布弹窗 =====
+document.getElementById('openCreateBtn').addEventListener('click', () => {
+  document.getElementById('f_email').value = getSellerEmail() || '（将使用登录邮箱）';
+  document.getElementById('createForm').reset();
+  document.getElementById('f_cover_preview').src = '';
+  $('#createModal').modal('show');
+});
+
+// ===== 提交发布 =====
+document.getElementById('createSubmitBtn').addEventListener('click', async () => {
+  const title = document.getElementById('f_title').value.trim();
+  const price = document.getElementById('f_price').value;
+  if(!title || price===''){ alert('请填写标题和价格'); return; }
+
+  const imagesStr = (document.getElementById('f_images').value || '').trim();
+  const imagesArr = imagesStr ? imagesStr.split(',').map(s=>s.trim()).filter(Boolean) : [];
+
+  const payload = {
+    title,
+    price: Number(price),
+    campus: document.getElementById('f_campus').value.trim(),
+    category: document.getElementById('f_category').value.trim(),
+    conditionLabel: document.getElementById('f_condition').value.trim(),
+    location: document.getElementById('f_location').value.trim(),
+    description: document.getElementById('f_desc').value.trim(),
+    coverImage: document.getElementById('f_cover').value.trim(),
+    imagesJson: JSON.stringify(imagesArr)
+  };
+
+  const btn = document.getElementById('createSubmitBtn');
+  btn.disabled = true;
+  try{
+    const r = await authedFetch('/my/listings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if(!r.ok){
+      const msg = await r.text();
+      throw new Error(msg || '发布失败');
+    }
+    $('#createModal').modal('hide');
+    await loadMine();
+    alert('发布成功！');
+  }catch(e){
+    if (e.message !== 'AUTH_REDIRECT') alert(e.message || '发布失败');
+  }finally{
+    btn.disabled = false;
+  }
+});
+
+// ===== 封面图片：本地选择 => 上传 => 回填 & 预览 =====
+document.getElementById('f_cover_file').addEventListener('change', async function () {
+  const file = this.files && this.files[0];
+  if (!file) return;
+
+  const fd = new FormData();
+  fd.append('file', file);
+
+  try {
+    const r = await fetch('/upload', { method: 'POST', body: fd });
+    if (!r.ok) throw new Error('上传失败：HTTP ' + r.status);
+    const data = await r.json(); // { url: "/adminlte/uploads/xxx.png" }
+
+    document.getElementById('f_cover').value = data.url;
+    document.getElementById('f_cover_preview').src = data.url;
+  } catch (e) {
+    alert(e.message || '上传失败');
+  } finally {
+    this.value = '';
+  }
+});
+
+// 手动粘贴 URL 时也预览
+document.getElementById('f_cover').addEventListener('input', function(){
+  document.getElementById('f_cover_preview').src = this.value || '';
+});
+
+// 初次载入
+document.addEventListener('DOMContentLoaded', loadMine);
+</script>
+<script>
+  // 若页面已有 authedFetch 就用它；否则退回原生 fetch
+  const _fetch = (typeof authedFetch === 'function') ? authedFetch : fetch;
+
+  // 填充头像 & 昵称（无昵称则用邮箱）
+  async function hydrateSidebar(){
+    try{
+      const rMe = await _fetch('/me', {cache:'no-store'});
+      if (!rMe.ok) return;
+      const me = await rMe.json(); // { email }
+
+      const rP = await _fetch('/profile', {cache:'no-store'});
+      const p  = rP.ok ? await rP.json() : {};
+
+      const nick = (p.nickname && p.nickname.trim()) ? p.nickname.trim() : me.email;
+      const avatar = (p.avatarUrl && p.avatarUrl.trim()) ? p.avatarUrl.trim() : 'dist/img/user2-160x160.jpg';
+
+      const nickEl = document.getElementById('sidebarNickname');
+      const emailEl = document.getElementById('sidebarEmail');
+      const imgEl   = document.getElementById('sidebarAvatar');
+
+      if (nickEl)  nickEl.textContent = nick;
+      if (emailEl) emailEl.textContent = me.email || '';
+      if (imgEl)   imgEl.src = avatar;
+    }catch(e){
+      // 未登录时可能被重定向；忽略即可
+      console.warn('hydrateSidebar skipped:', e && e.message);
+    }
+  }
+
+  // 根据当前路径，自动高亮并展开父级
+  function activateSidebar(){
+    const path = location.pathname.replace(/^\/+|\/+$/g, '');
+    document.querySelectorAll('.main-sidebar a.nav-link').forEach(a=>{
+      const href = (a.getAttribute('href') || '').replace(/^\/+|\/+$/g, '');
+      if (!href) return;
+      if (path.endsWith(href)){ // 简单匹配当前页
+        a.classList.add('active');
+        const parent = a.closest('.has-treeview');
+        if (parent){
+          parent.classList.add('menu-open');
+          const top = parent.querySelector(':scope > a.nav-link');
+          if (top) top.classList.add('active');
+        }
+      }
+    });
+  }
+
+  // 侧栏里的退出
+  document.getElementById('sidebarLogout')?.addEventListener('click', (e)=>{
+    e.preventDefault();
+    document.getElementById('sidebarLogoutForm')?.submit();
+  });
+
+  document.addEventListener('DOMContentLoaded', ()=>{
+    activateSidebar();
+    hydrateSidebar();
+  });
+</script>
+
+</body>
+</html>
